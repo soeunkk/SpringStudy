@@ -1,5 +1,6 @@
 package hello.core.order;
 
+import hello.core.annotation.MainDiscountPolicy;
 import hello.core.discount.DiscountPolicy;
 import hello.core.discount.FixDiscountPolicy;
 import hello.core.discount.RateDiscountPolicy;
@@ -12,7 +13,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
 @Component
-@RequiredArgsConstructor    //final 키워드가 붙은 필드들을 가지고 생성자를 만들어줌 (의존관계 추가할 때 필드 하나만 final 로 추가하면 되므로 굉장히 편리하다)
+//@RequiredArgsConstructor    //final 키워드가 붙은 필드들을 가지고 생성자를 만들어줌 (의존관계 추가할 때 필드 하나만 final 로 추가하면 되므로 굉장히 편리하다)
 public class OrderServiceImpl implements OrderService {
 
     //1 문제점: 할인 정책을 변경하려면 클라이언트인 OrderServiceImpl 코드를 고쳐야 함
@@ -26,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
 
 
     //1 DI를 통해 OCP 와 DIP 모두 충족할 수 있음
-    public OrderServiceImpl(MemberRepository memberRepository, @Qualifier("fixDiscountPolicy") DiscountPolicy discountPolicy) {
+    public OrderServiceImpl(MemberRepository memberRepository, @MainDiscountPolicy DiscountPolicy discountPolicy) {
         this.memberRepository = memberRepository;
         this.discountPolicy = discountPolicy;
     }
