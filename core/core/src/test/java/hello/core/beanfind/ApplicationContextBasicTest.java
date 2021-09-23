@@ -17,7 +17,7 @@ public class ApplicationContextBasicTest {
     void findBeanByName() {
         MemberService memberService = ac.getBean("memberService", MemberService.class);
 
-        //조회한 빈인 memberService가 MeberServiceImple의 인스턴스인지 확인
+        //조회한 빈인 memberService가 MemberServiceImpl의 인스턴스인지 확인
         Assertions.assertThat(memberService).isInstanceOf(MemberServiceImpl.class);
     }
 
