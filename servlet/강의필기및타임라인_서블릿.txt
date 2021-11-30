@@ -1,0 +1,50 @@
+>> GO! HelloServlet.class
+
+<< HTTP 요청 데이터 >>
+1. GET 쿼리 파라미터
+: 메시지 바디 없이 url의 쿼리파라미터에 데이터를 포함해서 전달
+ex) 검색, 필터, 페이징 등에서 많이 사용하는 방식 (url?username=hello&age=20))
+
+>> GO! RequestParamServlet.class
+- 모든 파라미터 조회: request.getParameterNames().is.asIterator().forEachRemaining([람다식])
+- 단일 파라미터 조회: request.getParameter([name])
+- 중복 값 파라미터 조회: request.getParameterValues([name])
+
+2. POST - HTML Form
+: 메시지 바디 쿼리 파라미터 형식으로 전달 (GET 방식과 똑같음)
+content-type: application/x-www-form-urlencoded
+ex) 회원 가입, 상품 주문 (username=hello&age=20)
+
+>> GO! hello-form.html
+- GET 쿼리 파라미터를 조회하는 방법과 동일한 방법으로 확인할 수 있음
+
+3. HTTP Message
+: HTTP API에서 주로 하용하며 데이터 형식은 주로 JSON을 사용함 (JSON,XML,TEXT 등..)
+POST,PUT,PATCH 모두 가능
+
+>> GO! RequestBodyStringServlet.class
+단순 텍스트
+- ServletInputStream inputStream = request.getInputStream();
+  String messageBody = StreamUtils.copyToString(inputStream, StandardCharsets.UTF_8);
+-> inputStream은 byte 코드를 반환하기 때문에 우리가 읽을 수 있는 문자로 보기 위해 StandardCharsets.UTF_8로 설정해야 한다.
+
+>> GO! RequestBodyJsonServlet.class
+JSON
+: 단순 텍스트를 읽는 방식에, JSON으로 파싱하는 것만 추가하면 됨
+- HelloData helloData = objectMapper.readValue(messageBody, HelloData.class);
+-> 해당 클래스는 ObjectMapper 필드를 가져야 함 (JSON 변환 라이브러리인 jackson에 있음)
+-> HelloData는 JSON을 받을 데이터용 클래스로, 게터세터를 가짐
+
+>> GO! ResponseHeaderServlet.class
+HttpServletResponse 기본 사용법
+
+>> GO! ResponseHtmlServlet
+HTTP 응답 데이터 - 단순 텍스트, HTML
+
+>> Go! ResponseJsonServlet
+HTTP 응답 데이터 - API JSON
+-> objectMapper.writeValueAsString(helloData) 를 통해서 클래스 값을 json 형식의 스트링으로 바꿔서 보냄
+-> response.setContentType("application/json")
+
+
+
