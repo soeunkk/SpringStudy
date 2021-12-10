@@ -47,4 +47,16 @@ HTTP 응답 데이터 - API JSON
 -> response.setContentType("application/json")
 
 
+>> Go! hello/servlet/web/servlet 패키지
+서블릿은 뷰 화면을 위한 HTML을 만드는 작업이 자바 코드에 섞어서 지저분하고 복잡
+
+>> Go! webapp/jsp 디렉토리
+이를 보완한 JSP는 HTML 기본에, 중간중간 동적으로 변경이 필요한 부분에만 자바를 적용. 그러나, 비즈니스 로직과 뷰 영역이 섞이므로 유지보수하기 어려움
+
+>> Go! hello/servlet/web/servletmvc 패키지, webapp/WEB-INF/views 디렉토리
+결론=> MVC 패턴을 사용하자!
+컨트롤러는 비즈니스 로직을 호출하는 부분으로, 뷰에게 전달할 모델을 만든다.
+모델은 request.setAttribute()로 보관되며 request.getAttribute()로 꺼낼 수 있다.
+뷰는 모델을 이용하여 클라이언트에게 보여주는 부분으로, HTML,XML 등 여러 형태로 나타낼 수 있다.
+
 
