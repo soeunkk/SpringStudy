@@ -1,0 +1,39 @@
+FrontController 패턴 특징
+1. 프론트 컨트롤러 서블릿 하나로 클라이언트의 요청을 받음 (입구가 하나) -> 프론트 컨트롤러는 해당하는 컨트롤러를 찾아서 호출
+2. 공통 처리 가능
+3. 프론트 컨트롤러를 제외한 나머지 컨트롤러는 서블릿을 사용하지 않아도 됨
+
+cf) 스프링 웹 MVC 의 핵심인 'DispatcherServlet'도 FrontController 패턴으로 구현되어 있음
+
+>> GO! hello/servlet/web/frontcontroller/v1 패키지
+v1 (클라이언트->FrontController->Controller->JSP 구조 만들기)
+문제점: 각 클래스에서 Dispatcher를 forward 하는 과정이 중복되고 있음
+
+>> GO! hello/servlet/web/frontcontroller/v2 패키지, MyView 클래스
+v2 (v1의 문제점1 개선: MyView라는 공통 클래스 만들기)
+ControllerV2 인터페이스는 MyView를 반환하고 FrontController는 myView의 render()를 실행함
+문제점1: ControllerV2 인터페이스의 process() 메서드가 필요없는 파라미터를 받고 있음 (request, response)
+문제점2: 컨트롤러를 지정하는 뷰 이름에 중복이 있음
+
+>> GO! hello/servlet/web/frontcontroller/v3 패키지, ModelView
+v3 (v2의 문제점1 개선: 컨트롤러에서 서블릿 종속성 제거, v2의 문제점2 개선: 뷰 이름을 논리 이름으로 변경(실제 이름은 프론트 컨트롤러에서 관리))
+viewResolver에서 논리뷰를 물리뷰(MyView)로 반환
+이번 버전부터는 컨트롤러에서 HttpServletRequest를 사용할 수 없으므로, 이를 사용하기 위한 별도의 Model이 필요
+🌟 v3에서 상당히 많은 것을 바꾸었기 때문에 복습 요망!!!!!
+문제점: 구조적으로 참 괜찮으나, 개발자가 만들기 번거로움
+
+>> GO! hello/servlet/web/frontcontroller/v4 패키지
+v4 (v3의 문제점 개선: 구조는 변경하지 않되, 단순하고 편리하게 변경)
+controller에서 ModelView가 아닌 viewName만 반환 (FrontControllerServlet에서 Request로 전달할 model까지 관리(V3에선 ModelView의 model에 해당)
+문제점: 프론트 컨트롤러를 보면 각 버전에 해당하는 컨트롤러만 사용할 수 있음, 유연하게 변경 불가
+
+>> GO! hello/servlet/web/frontcontroller/v5 패키지
+v5 (v4의 문제점 개선: 프론트 컨트롤러가 다양한 컨트롤러를 처리할 수 있도록 어댑터 패턴을 사용)
+핸들러 어댑터 목록으로 핸들러를 처리할 수 있는 핸들러 어댑터 조회
+프론트 컨트롤러에서 각 버전에 맞게 핸들러 어댑터를 호출, 핸들러 어댑터가 핸들러를 호출
+
+>> GO! hello/servlet/web/frontcontroller/v5 패키지
+v4 (v4의 문제점 개선: 프론트 컨트롤러가 다양한 컨트롤러를 처리할 수 있도록 어댑터 패턴을 사용)
+핸들러 어댑터 목록으로 핸들러를 처리할 수 있는 핸들러 어댑터 조회
+프론트 컨트롤러에서 각 버전에 맞게 핸들러 어댑터를 호출, 핸들러 어댑터가 핸들러를 호출
+
