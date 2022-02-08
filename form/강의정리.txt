@@ -1,0 +1,19 @@
+[ 타임리프 ]
+1. 타임리프가 제공하는 th:object, th:field 를 사용하면 id, name, value 속성에 자동으로 값을 넣어준다.
+<form th:object="${member}">
+    <input th:field="*{id}">
+</form>
+위의 코드가 렌더링 되면..
+<form>
+    <input id=1 name=1 value=1>
+</form>
+
+2. 체크박스를 단순히 만들었을 때 체크를 하지 않으면 false 값이 아닌, null 값이 들어간다.
+   이를 해결하기 위해 name 값 앞에 언더바를 붙인 값을 name 으로 하는 히든필드로 추가한다.
+   이렇게 되면 해당 체크박스의 값이 넘어오지 않아도 스프링 부트가 확인하여 false 로 처리해 준다.
+   하지만 이는 코드를 한줄씩 계속 추가하는 작업이므로 불편하다.
+   th:field 를 사용하면 알아서 히든필드까지 추가해준다.
+   또한 조회할 때는 알아서 value 처럼 checked 에 값을 넣어준다.
+
+3.
+
